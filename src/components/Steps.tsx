@@ -10,6 +10,8 @@ import { deployDocumentStore } from "../services/document-store";
 import { Button } from "../components/Button";
 import { Dns } from "../components/Dns";
 import { DocumentForm } from "../components/DocumentForm";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import  { faChevronRight} from "@fortawesome/free-solid-svg-icons";
 
 const Step = ({
   index,
@@ -84,27 +86,27 @@ export const Steps = () => {
   }[] = [
     {
       key: "connect",
-      title: "Connect Metamask Extension",
-      body: <Button buttonText="Connect" onHandler={onConnect} />,
+      title: "Conectar la extensión de Metamask",
+      body: <Button buttonText="Conectar" onHandler={onConnect} />,
     },
     {
       key: "deploy",
-      title: "Deploy Document Store",
-      body: <Button buttonText="Deploy" onHandler={onDeploy} />,
+      title: "Desplegar Document Store",
+      body: <Button buttonText="Desplegar" onHandler={onDeploy} />,
     },
     {
       key: "dns",
-      title: "Domain Name Configuration",
+      title: "Configuración de DNS",
       body: <Dns />,
     },
     {
       key: "document",
-      title: "Edit Document Form",
+      title: "Editar Formulario de Documento",
       body: <DocumentForm />,
     },
     {
       key: "download",
-      title: "Download & Verify",
+      title: "Descargar y Verificar Documento",
       body: (
         <>
           <Button buttonText="Download" onHandler={onDownload} />
@@ -114,7 +116,7 @@ export const Steps = () => {
             rel="noreferrer noopener"
             style={{ margin: "0 8px 8px 0" }}
           >
-            <button>Verify</button>
+            <button>Verificar</button>
           </a>
           <Button buttonText="Create Another" onHandler={onCreateAnother} />
         </>
@@ -124,23 +126,40 @@ export const Steps = () => {
 
   return (
     <>
-      <div style={{ display: "flex" }}>
-        {steps.map((step) => (
+      <div style={{ display: "flex", width:"100%", justifyContent:"space-between" }}>
+        {steps.map((step, index) => (
           <div
             key={`step-${step.key}`}
             style={{
-              padding: "0 8px",
               borderLeft: currentStep === step.key ? "solid 4px white" : "none",
+              width: "19%",
             }}
           >
             <div
               style={{
-                opacity: currentStep === step.key ? "1" : "0.2",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-evenly",
+                opacity: currentStep === step.key ? "1" : "0.4",
                 lineHeight: 1.3,
-                fontSize: "13px",
+                fontSize: "0.9em",
+                border:"solid 1px #f2f2f2",
+                height: "100%",
+                borderRadius: "0.5em",
+                padding: "0.5em",
+                width: "100%",
+                backgroundColor: currentStep === step.key ? "var(--primary-color)" : "white",
+                color: currentStep === step.key ? "white" : "var(--primary-color)",
               }}
             >
+              <span style={{border : "1px solid ", display:"flex", justifyContent:"center", alignItems:"center", borderRadius:"50%", width:"20px", height:"20px"}}>
+                {index + 1}
+              </span>
+              <div style={{maxWidth:"15ch", fontSize:"1rem"}}>
               {step.title}
+              </div>
+              {index < 4 && <FontAwesomeIcon  
+              icon={faChevronRight} className="" size="lg" />}
             </div>
           </div>
         ))}

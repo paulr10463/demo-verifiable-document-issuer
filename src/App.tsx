@@ -5,6 +5,7 @@ import { StatusProvider } from "./contexts/StatusContext";
 import { StepProvider } from "./contexts/StepContext";
 import { WrappedDocumentProvider } from "./contexts/WrappedDocumentContext";
 import { Steps } from "./components/Steps";
+import { Header } from "./components/Header";
 import { combineContextProviders } from "./utils";
 import "./App.css";
 
@@ -22,6 +23,7 @@ const App = () => {
   return (
     <AppContextProvider>
       <main>
+        <Header/>
         <Steps />
       </main>
     </AppContextProvider>

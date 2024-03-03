@@ -57,6 +57,12 @@ main {
 
 @media (min-width: 768px) {
   main {
-    width: 65ch;
+    width: 150ch;
   }
+}
+
+header{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
