@@ -30,6 +30,7 @@ const App = () => {
           <button className="principalButtons" onClick={()=>setMode("validar")}>Validar Documento</button>
         {mode === "emitir" && <Steps />}
         {mode === "validar" && <Validate />}
+
       </main>
     </AppContextProvider>
   );

@@ -61,7 +61,7 @@ export const DocumentForm = () => {
       
       // Ahora puedes usar rawDocument como necesites
     } catch (error) {
-      console.error('Error:', error);
+      alert(error+" Revisar que el número de cédula exista");
     }
 
     try {
@@ -89,16 +89,16 @@ export const DocumentForm = () => {
   return (
     <form onSubmit={onDocumentSubmit}>
       <section style={{ marginBottom: "24px" }}>
-        <p>Document Name</p>
+        <p>N° de cédula</p>
         <input
           style={{ padding: "8px 12px", width: "100%" }}
           type="text"
           name="DNIStudent"
-          placeholder="Form for Free Trade Agreement"
+          placeholder="1725651281"
         />
       </section>
-      <button type="submit" disabled={status === "pending"}>
-        {status === "pending" ? "Pending..." : "Submit"}
+      <button style={{marginBottom:"1rem"}}type="submit" disabled={status === "pending"}>
+        {status === "pending" ? "Cargando..." : "Aceptar"}
       </button>
     </form>
   );

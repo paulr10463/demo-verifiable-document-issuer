@@ -50,7 +50,8 @@ export const TransactionsList = () => {
 
     return (
     <>
-         <input style={{width:"50ch"}} id="VerifyDocumentStore" type="text" placeholder="0xXXXXXXXXXXXXXXXX" value={documentStoreAddress} onChange={onChange}/>
+        <label style={{marginRight:"1rem"}} htmlFor="VerifyDocumentStore">Document Store Address:</label>
+        <input style={{width:"50ch"}} id="VerifyDocumentStore" type="text" placeholder="0xXXXXXXXXXXXXXXXX" value={documentStoreAddress} onChange={onChange}/>
         <button onClick={enviarPeticion}>Enviar</button>
         <div>
             <h1>Lista de Transacciones</h1>

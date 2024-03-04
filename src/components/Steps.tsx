@@ -42,7 +42,9 @@ export const Steps = () => {
 
   const onConnect = async () => {
     try {
+      console.log(currentStep);
       const { providerSigner, providerNetwork } = await getAccount();
+      console.log(currentStep);
       setSigner(providerSigner);
       setNetwork(providerNetwork);
       setCurrentStep("deploy");
@@ -63,7 +65,7 @@ export const Steps = () => {
     const blob = new Blob([JSON.stringify(wrappedDocument, null, 2)], {
       type: "text/json;charset=utf-8",
     });
-    saveAs(blob, `SIMPLE_COO_DOCUMENT.tt`);
+    saveAs(blob, `certifyCertChain.json`);
   };
 
   const onShowContract = () => {
@@ -107,19 +109,8 @@ export const Steps = () => {
           <div style={{marginBottom:"1rem", border:"1px solid #f2f2f2", borderRadius:"0.5rem", padding:"0.5rem"}}>
             {onShowContract()}
           </div>
-          <div>
-            {wrappedDocument?.data.issuers[0].name}
-          </div>
-          <Button buttonText="Download" onHandler={onDownload} />
-          <a
-            href="https://dev.tradetrust.io/verify"
-            target="_blank"
-            rel="noreferrer noopener"
-            style={{ margin: "0 8px 8px 0" }}
-          >
-            <button>Verificar</button>
-          </a>
-          <Button buttonText="Create Another" onHandler={onCreateAnother} />
+          <Button buttonText="Descargar" onHandler={onDownload} />
+          <Button buttonText="Crear otro" onHandler={onCreateAnother} />
         </>
       ),
     },

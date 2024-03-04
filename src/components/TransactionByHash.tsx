@@ -1,11 +1,34 @@
 import { checkProof } from '@govtechsg/open-attestation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import DragAndDropJSONLoader from './DragAndDropJSONLoader'; 
+import { utils } from "@govtechsg/open-attestation";
+import { wrapDocument } from "@govtechsg/open-attestation";
 
 export const TransactionByHash = () => {
     const [transactionsData, setTransactionsData] = useState([]); // Cambiado a 'any' para permitir objetos, ajusta según necesidad
     const [transactionResult, setTransactionResult] = useState(null);
     const [address, setAddress] = useState("");
     const [merkleRootHash, setMerkleRootHash] = useState("");
+    const [document, setDocument] = useState<any>(null);
+
+    
+    useEffect(() => {
+        if (document) {
+            try{
+                const addressFromDoc = document.data.issuers[0].documentStore.split(":")[2];
+                const merkleRootFromDoc = document.signature.merkleRoot;
+                setAddress(addressFromDoc);
+                setMerkleRootHash(merkleRootFromDoc);
+            }catch(e){
+                alert("No se pudo obtener la dirección de la document store o el merkle root hash del documento");
+            }
+        }
+       
+    }, [document]);
+    const checkDocument = (rawDocument: any) => {
+        const wrappedDocument = wrapDocument(rawDocument);
+        alert(utils.isWrappedV2Document(wrappedDocument));
+    };
 
     const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAddress(e.target.value);
@@ -73,6 +96,7 @@ export const TransactionByHash = () => {
         <>
             <div>
                 <h1>Obtener transacción con el hash</h1>
+                <DragAndDropJSONLoader onLoadDocument={setDocument} />
                 <div>
                 <p>
                     Dirección de la Document Store: {address}
