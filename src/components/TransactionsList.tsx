@@ -1,9 +1,14 @@
 import React, { useState } from 'react';
 
-export const TransactionsList = ({address}) => {
+export const TransactionsList = () => {
     const [transactionsData, setTransactionsData] = useState([]); // Cambiado a 'any' para permitir objetos, ajusta según necesidad
+    const [documentStoreAddress, setDocumentStoreAddress] = useState("");
     
-    
+
+    const onChange = (event: { target: { value : string } }) => {
+        setDocumentStoreAddress(event.target.value);
+      };
+
     async function enviarPeticion() {
         const url = 'https://sepolia.infura.io/v3/f45e57b4e82342c289ea21394ef8ef7e';
         const body = {
@@ -12,7 +17,7 @@ export const TransactionsList = ({address}) => {
             params: [{
                 fromBlock: 'earliest',
                 toBlock: 'latest',
-                address: address,
+                address: documentStoreAddress,
             }],
             id: 1
         };
@@ -45,12 +50,14 @@ export const TransactionsList = ({address}) => {
 
     return (
     <>
+         <input style={{width:"50ch"}} id="VerifyDocumentStore" type="text" placeholder="0xXXXXXXXXXXXXXXXX" value={documentStoreAddress} onChange={onChange}/>
         <button onClick={enviarPeticion}>Enviar</button>
         <div>
             <h1>Lista de Transacciones</h1>
+            <h2>Dirección de la Document Store: {documentStoreAddress}</h2>
             <p>Más recientes primero</p>
             <ul>
-                {transactionsData.map((transaction, index) => (
+                {transactionsData.slice().reverse().map((transaction, index) => (
                     <li key={index}>
                         <a href={`https://sepolia.etherscan.io/tx/${transaction.transactionHash}`}>{transaction.transactionHash} </a>
                     </li>
