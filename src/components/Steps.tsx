@@ -12,7 +12,7 @@ import { Dns } from "../components/Dns";
 import { DocumentForm } from "../components/DocumentForm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import  { faChevronRight} from "@fortawesome/free-solid-svg-icons";
-
+import { DocumentStore } from "../components/DocumentStore";
 const Step = ({
   index,
   title,
@@ -33,6 +33,7 @@ const Step = ({
 };
 
 export const Steps = () => {
+  const stages = ["connect", "deploy", "dns", "document", "download"];
   const { signer, setSigner, setNetwork } = useAccountContext();
   const { setDocumentStoreAddress } = useDocumentStoreContext();
   const { setStatus } = useStatusContext();
@@ -50,23 +51,13 @@ export const Steps = () => {
     }
   };
 
-  const onDeploy = async () => {
-    try {
-      setStatus("pending");
-
-      const documentStoreAddress = await deployDocumentStore(
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        signer!,
-      );
-      setDocumentStoreAddress(documentStoreAddress);
-
-      setCurrentStep("dns");
-      setStatus("initial");
-    } catch (e) {
-      setStatus("error");
-      console.error(e);
+  const getBack = () => {
+    if (currentStep === "connect") {
+      return;
     }
-  };
+    const index = stages.indexOf(currentStep);
+    setCurrentStep(stages[index - 1]);
+  }
 
   const onDownload = () => {
     const blob = new Blob([JSON.stringify(wrappedDocument, null, 2)], {
@@ -74,6 +65,10 @@ export const Steps = () => {
     });
     saveAs(blob, `SIMPLE_COO_DOCUMENT.tt`);
   };
+
+  const onShowContract = () => {
+    return JSON.stringify(wrappedDocument, null, 2);
+  }
 
   const onCreateAnother = () => {
     setCurrentStep("document");
@@ -91,8 +86,8 @@ export const Steps = () => {
     },
     {
       key: "deploy",
-      title: "Desplegar Document Store",
-      body: <Button buttonText="Desplegar" onHandler={onDeploy} />,
+      title: "Configurar Document Store",
+      body: <DocumentStore/> 
     },
     {
       key: "dns",
@@ -109,6 +104,12 @@ export const Steps = () => {
       title: "Descargar y Verificar Documento",
       body: (
         <>
+          <div style={{marginBottom:"1rem", border:"1px solid #f2f2f2", borderRadius:"0.5rem", padding:"0.5rem"}}>
+            {onShowContract()}
+          </div>
+          <div>
+            {wrappedDocument?.data.issuers[0].name}
+          </div>
           <Button buttonText="Download" onHandler={onDownload} />
           <a
             href="https://dev.tradetrust.io/verify"
@@ -168,6 +169,7 @@ export const Steps = () => {
         (step, index) =>
           currentStep === step.key && <Step {...{ index, ...step }} />,
       )}
+      {currentStep != "connect" && <Button buttonText="Regresar" onHandler={getBack}></Button>}
     </>
   );
 };

@@ -32,6 +32,19 @@ body {
   min-height: 100vh;
 }
 
+input[type="text"] {
+  border-radius: 8px;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  transition: border-color 0.25s;
+  outline: none;
+  border: 1px solid #cccccc;
+}
+input[type="text"]:focus {
+  border-color: #646cff;
+}
 h1 {
   font-size: 2.6em;
   line-height: 1.1;

@@ -23,30 +23,34 @@ export const Dns = () => {
     <div>
       <section style={{ marginBottom: "24px" }}>
         <p>
-          Copy and paste the command below into a terminal to get a temporary
-          DNS.
+          Tu dirección de Document Store es: <strong>{documentStoreAddress}</strong>
+        </p>
+        <p>
+          Coloca el siguiente parámetro como un atributo TXT del dominio que emitirá los certificados:
         </p>
         <code
           style={{
             padding: "8px 12px",
-            backgroundColor: "black",
             display: "block",
+            border: "1px solid #e0e0e0",
+            borderRadius: "0.5rem",
+            background: "var(--primary-color)",
+            color: "white", 
           }}
         >
-          npx open-attestation dns txt-record create --address{" "}
-          {documentStoreAddress} --network-id {network?.chainId}
+          openatts net=ethereum netId={network?.chainId} addr={documentStoreAddress} 
         </code>
       </section>
       <section style={{ marginBottom: "24px" }}>
-        <p>Enter the temporary DNS given in the input below.</p>
+        <p>Ingresa el DNS en el que se realizó la configuración: </p>
         <input
           style={{ padding: "8px 12px", width: "100%" }}
           type="text"
-          placeholder="few-green-cat.sandbox.openattestation.com"
+          placeholder="epn.edu.ec"
           onChange={onChange}
         />
       </section>
-      <Button buttonText="Confirm" onHandler={onConfirm} />
+      <Button buttonText="Confirmar" onHandler={onConfirm} />
     </div>
   );
 };

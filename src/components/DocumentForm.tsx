@@ -19,7 +19,7 @@ export const DocumentForm = () => {
     $template: {
       name: "SIMPLE_COO",
       type: "EMBEDDED_RENDERER",
-      url: "https://generic-templates.tradetrust.io",
+      url: "https://paulr10463.github.io/CheckPlantilla",
     },
     issuers: [
       {
@@ -37,30 +37,42 @@ export const DocumentForm = () => {
   const onDocumentSubmit = async (event: any) => {
     event.preventDefault();
     const data = new FormData(event.target);
+    const dniStudent = data.get("DNIStudent")
+    //Change the fetch to the correct endpoint
+    const path = 'http://localhost:3000/student/'+dniStudent
 
-    const documentData = {
-      documentName: data.get("documentName"),
-      issueDateAndTime: data.get("issueDateAndTime"),
-      issueIn: data.get("issueIn"),
-      cooId: data.get("cooId"),
-    };
-
-    const rawDocument = {
-      ...documentBase,
-      ...documentData,
-    };
+    let rawDocument = {};
+    try {
+      const response = await fetch(path);
+      if (!response.ok) {
+        throw new Error('La solicitud falló');
+      }
+      const data = await response.json();
+    
+      rawDocument = {
+        // Suponiendo que documentBase ya está definido en alguna parte de tu código
+        ...documentBase,
+        names: data["names"],
+        lastNames: data["lastNames"],
+        faculty: data["faculty"],
+        academicPeriod: data["academicPeriod"],
+        enrollmentDate : data["enrollmentDate"],
+      };
+      
+      // Ahora puedes usar rawDocument como necesites
+    } catch (error) {
+      console.error('Error:', error);
+    }
 
     try {
       setStatus("pending");
-
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      console.log(rawDocument);
       const wrappedDocument = wrapDocument(rawDocument as any);
 
       await issueDocument({
         wrappedDocument,
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         signer: signer!,
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         documentStoreAddress: documentStoreAddress!,
       });
 
@@ -81,35 +93,8 @@ export const DocumentForm = () => {
         <input
           style={{ padding: "8px 12px", width: "100%" }}
           type="text"
-          name="documentName"
-          defaultValue="Form for Free Trade Agreement"
-        />
-      </section>
-      <section style={{ marginBottom: "24px" }}>
-        <p>Issued Date &amp; Time</p>
-        <input
-          style={{ padding: "8px 12px", width: "100%" }}
-          type="text"
-          name="issueDateAndTime"
-          defaultValue="1 May 2023, 3:05pm"
-        />
-      </section>
-      <section style={{ marginBottom: "24px" }}>
-        <p>Issued In</p>
-        <input
-          style={{ padding: "8px 12px", width: "100%" }}
-          type="text"
-          name="issueIn"
-          defaultValue="Singapore"
-        />
-      </section>
-      <section style={{ marginBottom: "24px" }}>
-        <p>COO Id</p>
-        <input
-          style={{ padding: "8px 12px", width: "100%" }}
-          type="text"
-          name="cooId"
-          defaultValue="123456"
+          name="DNIStudent"
+          placeholder="Form for Free Trade Agreement"
         />
       </section>
       <button type="submit" disabled={status === "pending"}>
